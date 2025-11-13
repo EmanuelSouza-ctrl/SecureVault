@@ -1,0 +1,294 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+:root {
+    --color-background: #ffffff;
+    --color-text: #333333;
+    --color-primary: #007bff;
+    --color-secondary: #6c757d;
+    --color-accent: #28a745;
+    --color-card-bg: #f8f9fa;
+    --color-border: #e9ecef;
+}
+body.dark-mode {
+    --color-background: #121212;
+    --color-text: #e0e0e0;
+    --color-primary: #8ab4f8;
+    --color-secondary: #9aa0a6;
+    --color-accent: #6aa84f;
+    --color-card-bg: #1e1e1e;
+    --color-border: #333333;
+}
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: var(--color-background);
+    color: var(--color-text);
+    transition: background-color 0.3s, color 0.3s;
+    line-height: 1.6;
+}
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+.main-header {
+    background-color: var(--color-card-bg);
+    border-bottom: 1px solid var(--color-border);
+    padding: 15px 0;
+}
+.nav-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--color-primary);
+    text-decoration: none;
+}
+.nav-menu {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+.nav-menu a {
+    color: var(--color-text);
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    transition: background-color 0.2s, color 0.2s;
+}
+.nav-menu a:hover {
+    background-color: var(--color-border);
+    color: var(--color-primary);
+}
+#theme-toggle-btn, #nav-toggle {
+    background: none;
+    border: 1px solid var(--color-border);
+    color: var(--color-text);
+    padding: 8px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+#theme-toggle-btn:hover, #nav-toggle:hover {
+    background-color: var(--color-border);
+}
+#nav-toggle {
+    display: none; 
+}
+.card {
+    background-color: var(--color-card-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 25px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    border: none;
+}
+.btn-primary {
+    background-color: var(--color-primary);
+    color: #ffffff;
+}
+.btn-primary:hover {
+    background-color: #0056b3; 
+}
+body.dark-mode .btn-primary:hover {
+    background-color: #6a95e7;
+}
+.hero {
+    text-align: center;
+    padding: 60px 0;
+}
+.hero h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    color: var(--color-primary);
+}
+.hero p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+.pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+.pricing-card {
+    text-align: center;
+}
+.pricing-card h3 {
+    color: var(--color-primary);
+    margin-bottom: 15px;
+}
+.price {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+.price span {
+    display: block;
+    font-size: 1rem;
+    font-weight: normal;
+    color: var(--color-secondary);
+}
+.pricing-card ul {
+    list-style: none;
+    text-align: left;
+    margin: 20px 0;
+}
+.pricing-card ul li {
+    padding: 8px 0;
+    border-bottom: 1px dotted var(--color-border);
+}
+.toggle-group {
+    text-align: center;
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+.toggle-group label {
+    font-weight: bold;
+}
+.toggle-switch input[type="checkbox"] {
+    position: relative;
+    width: 40px;
+    height: 20px;
+    -webkit-appearance: none;
+    background: var(--color-secondary);
+    outline: none;
+    border-radius: 20px;
+    cursor: pointer;
+    margin: 0 10px;
+    transition: background-color 0.3s;
+}
+.toggle-switch input[type="checkbox"]:checked {
+    background: var(--color-accent);
+}
+.toggle-switch input[type="checkbox"]::before {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    top: 2px;
+    left: 2px;
+    background: #ffffff;
+    transition: 0.3s;
+}
+.toggle-switch input[type="checkbox"]:checked::before {
+    transform: translateX(20px);
+}
+#annual-discount {
+    color: var(--color-accent);
+    font-weight: bold;
+    font-size: 0.9rem;
+    margin-left: 10px;
+    transition: visibility 0.5s, opacity 0.5s;
+}
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+.feature-item {
+    text-align: center;
+}
+.feature-item .icon {
+    font-size: 2.5rem;
+    color: var(--color-primary);
+    margin-bottom: 15px;
+}
+.feature-item h4 {
+    margin-bottom: 8px;
+}
+.form-card {
+    max-width: 400px;
+    margin: 40px auto;
+    padding: 30px;
+}
+.form-group {
+    margin-bottom: 15px;
+}
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+.form-group input, .form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--color-border);
+    border-radius: 5px;
+    background-color: var(--color-background);
+    color: var(--color-text);
+    transition: border-color 0.2s;
+}
+.form-group input:focus, .form-group textarea:focus {
+    border-color: var(--color-primary);
+    outline: none;
+}
+.main-footer {
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 50px;
+    border-top: 1px solid var(--color-border);
+    color: var(--color-secondary);
+}
+@media (max-width: 768px) {
+    .nav-menu {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        background-color: var(--color-card-bg);
+        border-bottom: 1px solid var(--color-border);
+        padding: 10px 0;
+        z-index: 100;
+    }
+    .nav-menu.active {
+        display: flex;
+    }
+    .nav-menu li {
+        text-align: center;
+        width: 100%;
+    }
+    .nav-menu a {
+        display: block;
+        padding: 10px 20px;
+    }
+    #nav-toggle {
+        display: block;
+    }
+    .nav-content {
+        padding: 0 10px;
+    }
+    .hero h1 {
+        font-size: 2rem;
+    }
+    .price {
+        font-size: 2.5rem;
+    }
+}
