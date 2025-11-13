@@ -1,4 +1,5 @@
 Projeto: SecureVault
+
 Este é um projeto de landing page e responsiva, desenvolvida inteiramente com HTML, CSS e JavaScript, focada em performance, 
 acessibilidade e experiência do usuário. O projeto simula uma aplicação completa com funcionalidades como controle de tema e 
 formulários interativos.
