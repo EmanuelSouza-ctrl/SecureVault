@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - SecureVault</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="main-header">
+        <div class="container nav-content">
+            <a href="index.html" class="logo">
+                <i class="fas fa-shield-alt"></i> SecureVault
+            </a>
+            <button id="nav-toggle" aria-label="Abrir Menu">
+                <i class="fas fa-bars"></i>
+            </button>
+            <nav>
+                <ul class="nav-menu" id="nav-menu">
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="funcionalidades.html">Recursos</a></li>
+                    <li><a href="precos.html">Preços</a></li>
+                    <li><a href="suporte.html">Suporte</a></li>
+                    <li><a href="#" id="logout-btn" class="btn btn-primary">Sair</a></li>
+                </ul>
+            </nav>
+            <button id="theme-toggle-btn" aria-label="Alternar Tema">
+                <i class="fas fa-sun"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero" style="text-align: center; padding: 40px 0;">
+            <h1>Bem-vindo, <span id="user-name">Usuário</span>!</h1>
+            <p>Sua conta está segura e ativa.</p>
+        </section>
+
+        <div class="features-grid">
+            <div class="card feature-item">
+                <div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                <h4>Upload de Arquivos</h4>
+                <p>Envie arquivos com criptografia automática.</p>
+                <button class="btn btn-primary" style="margin-top: 10px;">Fazer Upload</button>
+            </div>
+            <div class="card feature-item">
+                <div class="icon"><i class="fas fa-folder-open"></i></div>
+                <h4>Meus Arquivos</h4>
+                <p>Acesse todos os seus documentos criptografados.</p>
+                <a href="#" class="btn btn-primary" style="margin-top: 10px; display: inline-block;">Ver Arquivos</a>
+            </div>
+            <div class="card feature-item">
+                <div class="icon"><i class="fas fa-chart-pie"></i></div>
+                <h4>Uso do Armazenamento</h4>
+                <p>2.3 GB de 10 GB utilizados</p>
+                <div class="progress-bar" style="background: var(--color-border); height: 10px; border-radius: 5px; margin-top: 10px;">
+                    <div style="background: var(--color-primary); width: 23%; height: 100%; border-radius: 5px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" style="margin-top: 40px; text-align: center;">
+            <h3>Atividade Recente</h3>
+            <ul style="text-align: left; margin: 20px 0; list-style: none;">
+                <li><i class="fas fa-check" style="color: var(--color-accent);"></i> Arquivo "contrato.pdf" enviado - 15/11/2025 19:45</li>
+                <li><i class="fas fa-check" style="color: var(--color-accent);"></i> Login realizado - 15/11/2025 20:04</li>
+            </ul>
+        </div>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <p>© 2025 SecureVault. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script type="module" src="js/main.js"></script>
+    <script type="module">
+        // Mostrar nome do usuário
+        const users = JSON.parse(localStorage.getItem('registeredUsers')) || [];
+        const currentUserEmail = sessionStorage.getItem('currentUser');
+        const user = users.find(u => u.email === currentUserEmail);
+        if (user) {
+            document.getElementById('user-name').textContent = user.name.split(' ')[0];
+        }
+
+        // Logout
+        document.getElementById('logout-btn').addEventListener('click', (e) => {
+            e.preventDefault();
+            sessionStorage.removeItem('currentUser');
+            window.location.href = 'entrar.html';
+        });
+    </script>
+</body>
+</html>
