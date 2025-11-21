@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preços - SecureVault</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="main-header">
+        <div class="container nav-content">
+            <a href="index.html" class="logo">
+                <i class="fas fa-shield-alt"></i> SecureVault
+            </a>
+            <button id="nav-toggle" aria-label="Abrir Menu">
+                <i class="fas fa-bars"></i>
+            </button>
+            <nav>
+                <ul class="nav-menu" id="nav-menu">
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="funcionalidades.html">Recursos</a></li>
+                    <li><a href="precos.html">Preços</a></li>
+                    <li><a href="suporte.html">Suporte</a></li>
+                    <li><a href="entrar.html" class="btn btn-primary">Entrar</a></li>
+                </ul>
+            </nav>
+            <button id="theme-toggle-btn" aria-label="Alternar Tema">
+                <i class="fas fa-sun"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="container">
+        <h1 style="text-align: center; margin-top: 40px; color: var(--color-primary);">Planos Simples e Transparentes</h1>
+
+        <div class="toggle-group">
+            <span>Mensal</span>
+            
+            <label class="toggle-switch">
+                <input type="checkbox" id="price-toggle">
+                <span class="slider"></span>
+            </label>
+            
+            <span>Anual</span>
+            <span id="annual-discount">Economize 15%!</span>
+        </div>
+
+        <div class="pricing-grid">
+            <div class="card pricing-card">
+                <h3>Básico</h3>
+                <p class="price">
+                    <span class="price-monthly">R$ 29<small>/mês</small></span>
+                    <span class="price-annual" style="display: none;">R$ 299<small>/ano</small></span>
+                </p>
+                <a href="#" class="btn btn-primary">Escolher Plano</a>
+                <ul>
+                    <li><i class="fas fa-check"></i> 1 Usuário</li>
+                    <li><i class="fas fa-check"></i> 5 GB de Armazenamento</li>
+                    <li style="color: var(--color-secondary);"><i class="fas fa-times"></i> Suporte Prioritário</li>
+                </ul>
+            </div>
+
+            <div class="card pricing-card popular">
+                <div class="popular-badge">Mais Popular</div>
+                <h3>Pro</h3>
+                <p class="price">
+                    <span class="price-monthly">R$ 69<small>/mês</small></span>
+                    <span class="price-annual" style="display: none;">R$ 690<small>/ano</small></span>
+                </p>
+                <a href="#" class="btn btn-primary" style="background-color: var(--color-accent);">Escolher Plano</a>
+                <ul>
+                    <li><i class="fas fa-check"></i> 5 Usuários</li>
+                    <li><i class="fas fa-check"></i> 50 GB de Armazenamento</li>
+                    <li><i class="fas fa-check"></i> Suporte Prioritário</li>
+                </ul>
+            </div>
+
+            <div class="card pricing-card">
+                <h3>Empresarial</h3>
+                <p class="price">
+                    <span class="price-monthly">R$ 149<small>/mês</small></span>
+                    <span class="price-annual" style="display: none;">R$ 1.490<small>/ano</small></span>
+                </p>
+                <a href="#" class="btn btn-primary">Escolher Plano</a>
+                <ul>
+                    <li><i class="fas fa-check"></i> Usuários Ilimitados</li>
+                    <li><i class="fas fa-check"></i> Armazenamento Ilimitado</li>
+                    <li><i class="fas fa-check"></i> Gerente de Contas Dedicado</li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <p>© 2025 SecureVault. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>

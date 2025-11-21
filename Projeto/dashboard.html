@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - SecureVault</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+</head>
+<body>
+    <header class="main-header">
+        <div class="container nav-content">
+            <a href="index.html" class="logo">
+                <i class="fas fa-shield-alt"></i> SecureVault
+            </a>
+            <button id="nav-toggle" aria-label="Abrir Menu">
+                <i class="fas fa-bars"></i>
+            </button>
+            <nav>
+                <ul class="nav-menu" id="nav-menu">
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="funcionalidades.html">Recursos</a></li>
+                    <li><a href="precos.html">Preços</a></li>
+                    <li><a href="suporte.html">Suporte</a></li>
+                    <li><a href="#" id="logout-btn" class="btn btn-primary">Sair</a></li>
+                </ul>
+            </nav>
+            <button id="theme-toggle-btn" aria-label="Alternar Tema">
+                <i class="fas fa-sun"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero" style="text-align: center; padding: 40px 0;">
+            <h1>Bem-vindo, <span id="user-name">Usuário</span>!</h1>
+            <p id="plan-info">Plano: Carregando...</p>
+            <div class="progress-bar" style="background: var(--color-border); height: 12px; border-radius: 6px; margin: 15px auto; max-width: 500px;">
+                <div id="storage-progress" style="background: var(--color-primary); width: 0%; height: 100%; border-radius: 6px; transition: width 0.6s;"></div>
+            </div>
+            <small id="storage-text">0 MB de 0 GB usados</small>
+        </section>
+
+        <div class="features-grid">
+            <div class="card feature-item">
+                <div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                <h4>Enviar Arquivo Seguro</h4>
+                <p>Seus arquivos são criptografados antes de sair do seu dispositivo.</p>
+                <input type="file" id="fileInput" style="margin: 10px 0;">
+                <button id="uploadBtn" class="btn btn-primary">Fazer Upload</button>
+                <p id="uploadFeedback" style="margin-top: 10px; min-height: 24px;"></p>
+            </div>
+
+            <div class="card feature-item">
+                <div class="icon"><i class="fas fa-shield-alt"></i></div>
+                <h4>Segurança Total</h4>
+                <p>Criptografia AES-256 no navegador. Nem nós vemos seus arquivos.</p>
+            </div>
+        </div>
+
+        <div class="card" style="margin-top: 40px;">
+            <h3><i class="fas fa-folder-open"></i> Meus Arquivos</h3>
+            <div id="fileList" style="margin-top: 20px;">
+                <p style="text-align:center; color: var(--color-secondary);">Nenhum arquivo enviado ainda.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <p>© 2025 SecureVault. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-storage-compat.js"></script>
+
+    <script type="module" src="js/main.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js";
+        import { getStorage, ref, uploadBytes, getDownloadURL, listAll, deleteObject, getMetadata } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-storage-compat.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyB1mO7MqeMO1skMolX1OIK7ijX_7lTmfck",
+            authDomain: "vault-7ac1e.firebaseapp.com",
+            projectId: "vault-7ac1e",
+            storageBucket: "vault-7ac1e.firebasestorage.app",
+            messagingSenderId: "957642053176",
+            appId: "1:957642053176:web:fec08f8024b99be77238cd",
+            measurementId: "G-98E0NWVDGW"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const storage = getStorage(app);
+        const currentUserEmail = sessionStorage.getItem('currentUser');
+        if (!currentUserEmail) {
+            window.location.href = 'entrar.html';
+        }
+        const users = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+        const currentUser = users.find(u => u.email === currentUserEmail);
+        if (currentUser) {
+            document.getElementById('user-name').textContent = currentUser.name.split(' ')[0];
+            
+            if (!currentUser.plano) {
+                currentUser.plano = 'Básico';
+                const updatedUsers = users.map(u => u.email === currentUserEmail ? currentUser : u);
+                localStorage.setItem('registeredUsers', JSON.stringify(updatedUsers));
+            }
+            document.getElementById('plan-info').textContent = `Plano: ${currentUser.plano}`;
+        }
+        const limitesGB = { 'Básico': 5, 'Pro': 50, 'Empresarial': 9999 };
+        const limiteBytes = limitesGB[currentUser?.plano || 'Básico'] * 1024 * 1024 * 1024;
+
+        const userStorageRef = ref(storage, `files/${currentUserEmail}`);
+        document.getElementById('uploadBtn').addEventListener('click', async () => {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+            if (!file) return alert('Selecione um arquivo');
+
+            const feedback = document.getElementById('uploadFeedback');
+            feedback.textContent = 'Criptografando e enviando...';
+            feedback.style.color = 'var(--color-primary)';
+
+            try {
+                const used = await getUsedStorage();
+                if (used + file.size > limiteBytes) {
+                    feedback.textContent = `Erro: Limite de armazenamento excedido (${currentUser.plano})`;
+                    feedback.style.color = 'red';
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = async (e) => {
+                    const encrypted = CryptoJS.AES.encrypt(e.target.result, currentUserEmail).toString();
+                    const encryptedBlob = new Blob([encrypted], { type: 'text/plain' });
+
+                    const fileRef = ref(userStorageRef, file.name);
+                    await uploadBytes(fileRef, encryptedBlob);
+                    feedback.textContent = 'Upload concluído com sucesso!';
+                    feedback.style.color = 'var(--color-accent)';
+                    fileInput.value = '';
+                    await updateStorageUsage();
+                    await listFiles();
+                };
+                reader.readAsArrayBuffer(file);
+            } catch (err) {
+                feedback.textContent = 'Erro no upload: ' + err.message;
+                feedback.style.color = 'red';
+            }
+        });
+        async function listFiles() {
+            const list = document.getElementById('fileList');
+            list.innerHTML = '<p style="text-align:center; color:var(--color-secondary);">Carregando...</p>';
+
+            try {
+                const res = await listAll(userStorageRef);
+                if (res.items.length === 0) {
+                    list.innerHTML = '<p style="text-align:center; color:var(--color-secondary);">Nenhum arquivo enviado ainda.</p>';
+                    return;
+                }
+
+                list.innerHTML = '';
+                for (const item of res.items) {
+                    const metadata = await getMetadata(item);
+                    const sizeMB = (metadata.size / (1024*1024)).toFixed(2);
+                    const li = document.createElement('div');
+                    li.style = 'padding: 12px; border-bottom: 1px solid var(--color-border); display: flex; justify-content: space-between; align-items: center;';
+                    li.innerHTML = `
+                        <span><i class="fas fa-file"></i> ${item.name} <small>(${sizeMB} MB)</small></span>
+                        <div>
+                            <button class="btn-download" data-ref="${item.fullPath}">Download</button>
+                            <button class="btn-delete" data-ref="${item.fullPath}">Excluir</button>
+                        </div>
+                    `;
+                    list.appendChild(li);
+                }
+            } catch (err) {
+                list.innerHTML = '<p style="color:red;">Erro ao carregar arquivos.</p>';
+            }
+        }
+        document.addEventListener('click', async (e) => {
+            if (e.target.classList.contains('btn-download')) {
+                const path = e.target.dataset.ref;
+                const fileRef = ref(storage, path);
+                try {
+                    const url = await getDownloadURL(fileRef);
+                    const response = await fetch(url);
+                    const encryptedText = await response.text();
+                    const decryptedBytes = CryptoJS.AES.decrypt(encryptedText, currentUserEmail);
+                    const decryptedData = decryptedBytes.toString(CryptoJS.enc.Latin1);
+
+                    const blob = new Blob([decryptedData], { type: 'application/octet-stream' });
+                    const a = document.createElement('a');
+                    a.href = URL.createObjectURL(blob);
+                    a.download = e.target.parentElement.parentElement.querySelector('span').textContent.split(' ')[1];
+                    a.click();
+                } catch (err) {
+                    alert('Erro ao baixar arquivo');
+                }
+            }
+
+            if (e.target.classList.contains('btn-delete')) {
+                if (!confirm('Excluir permanentemente?')) return;
+                const path = e.target.dataset.ref;
+                const fileRef = ref(storage, path);
+                await deleteObject(fileRef);
+                await updateStorageUsage();
+                listFiles();
+            }
+        });
+        async function getUsedStorage() {
+            const res = await listAll(userStorageRef);
+            let total = 0;
+            for (const item of res.items) {
+                const meta = await getMetadata(item);
+                total += meta.size;
+            }
+            return total;
+        }
+        async function updateStorageUsage() {
+            const used = await getUsedStorage();
+            const usedGB = (used / (1024*1024*1024)).toFixed(2);
+            const percent = Math.min((used / limiteBytes) * 100, 100);
+            document.getElementById('storage-progress').style.width = percent + '%';
+            document.getElementById('storage-text').textContent = `${usedGB} GB de ${limitesGB[currentUser?.plano || 'Básico']} GB usados`;
+        }
+        document.getElementById('logout-btn').addEventListener('click', (e) => {
+            e.preventDefault();
+            sessionStorage.removeItem('currentUser');
+            window.location.href = 'entrar.html';
+        });
+        updateStorageUsage();
+        listFiles();
+    </script>
+</body>
+</html>
