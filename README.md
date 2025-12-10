@@ -1,4 +1,4 @@
-# SecureVault – Cofre Digital Seguro (Full-Stack)
+# SecureVault – Cofre Digital Seguro
 
 **SecureVault** é um SaaS completo de armazenamento em nuvem com autenticação real, upload de arquivos no servidor, controle de planos e limite de armazenamento — tudo feito com **Vanilla JS no front-end** e **Node.js + Express no back-end**.
 
