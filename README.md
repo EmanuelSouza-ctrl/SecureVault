@@ -72,10 +72,10 @@ securevault/
 
 ## Próximos Passos (já planejados)
 
- Sistema de pagamento com Stripe
- Upgrade de plano dentro do dashboard
- Compartilhamento de arquivos com link temporário
- PWA + notificações
+- Sistema de pagamento com Stripe
+- Upgrade de plano dentro do dashboard
+- Compartilhamento de arquivos com link temporário
+- PWA + notificações
 
  ## Licença
  
