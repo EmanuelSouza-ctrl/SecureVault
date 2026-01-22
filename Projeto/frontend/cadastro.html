@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro - SecureVault</title>
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+</head>
+<body>
+<header class="main-header">
+  <div class="container nav-content">
+    <a href="index.html" class="logo">
+      <i class="fas fa-shield-alt"></i> SecureVault
+    </a>
+    <button id="nav-toggle" aria-label="Abrir Menu">
+      <i class="fas fa-bars"></i>
+    </button>
+    <nav>
+      <ul class="nav-menu" id="nav-menu">
+        <li><a href="index.html">Início</a></li>
+        <li><a href="funcionalidades.html">Recursos</a></li>
+        <li><a href="precos.html">Preços</a></li>
+        <li><a href="suporte.html">Suporte</a></li>
+        <li><a href="entrar.html">Entrar</a></li>
+      </ul>
+    </nav>
+    <button id="theme-toggle-btn">
+      <i class="fas fa-sun"></i>
+    </button>
+  </div>
+</header>
+
+<main class="container">
+  <div class="card form-card">
+    <h2 style="text-align:center;">Criar Nova Conta</h2>
+    <form id="login-form">
+      <div class="form-group">
+        <input id="name" placeholder="Nome Completo" required>
+      </div>
+      <div class="form-group">
+	<input id="email" type="email" placeholder="E-mail" required>
+      </div>
+      <div class="form-group">
+        <input id="password" type="password" placeholder="Senha" required>
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%;">
+        Criar Conta
+      </button>
+    </form>
+    <p id="form-feedback" style="text-align:center;margin-top:10px"></p>
+  </div>
+</main>
+
+<footer class="main-footer">
+  <div class="container">
+    <p>© 2025 SecureVault</p>
+  </div>
+</footer>
+
+<script type="module">
+  import { register } from "./js/modules/api.js";
+  import { notify } from "./js/modules/notifications.js";
+
+  document.getElementById("register-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+
+    try {
+      await register(name, email, password);
+      notify("Conta criada com sucesso!", "success");
+      setTimeout(() => location.href = "entrar.html", 1200);
+    } catch (err) {
+      notify(err.message, "error");
+    }
+  });
+</script>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>
