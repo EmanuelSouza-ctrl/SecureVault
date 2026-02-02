@@ -79,7 +79,7 @@ npm server.js
 ###  No Terminal 2, Inicie o servidor do front-end
 
 ```bash
-cd ~/Downloads/Projeto/frontend
+cd Projeto/frontend
 npx serve
 ```
 
