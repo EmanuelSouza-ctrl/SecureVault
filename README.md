@@ -61,23 +61,29 @@ git clone https://github.com/seu-usuario/securevault.git
 cd securevault
 ```
 
-###  Instale as dependências do back-end
+###  No Terminal 1, Instale as dependências do back-end
 
 ```bash
 cd Projeto/backend
 npm install
+npx prisma migrate dev --name init
+npx prisma generate
 ```
 
 ###  Inicie o servidor
 
 ```bash
-npm start
+npm server.js
 ```
 
-###  Rode o front-end
+###  No Terminal 2, Inicie o servidor do front-end
 
-Abra os arquivos HTML com **Live Server (VS Code)**
-ou acesse a porta indicada no terminal (geralmente `http://localhost:3000`).
+```bash
+cd ~/Downloads/Projeto/frontend
+npx serve
+```
+
+ Acesse a porta indicada no terminal (geralmente `http://localhost:38029`).
 
 ---
 
