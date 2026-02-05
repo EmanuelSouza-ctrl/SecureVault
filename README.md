@@ -73,7 +73,7 @@ npx prisma generate
 ###  Inicie o servidor
 
 ```bash
-npm server.js
+npx server.js
 ```
 
 ###  No Terminal 2, Inicie o servidor do front-end
